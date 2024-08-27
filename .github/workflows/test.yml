@@ -45,3 +45,21 @@ jobs:
       with:
         name: residuals
         path: residuals.png
+# display the png files in workflow
+    - name: Display feature importance plot
+      uses: actions/github-script@v3
+      with:
+        script: |
+          const artifact = artifacts.artifact_list.artifacts.find(artifact => artifact.name === 'feature_importance');
+          if (artifact) {
+            core.info(`![feature_importance](${artifact.archive_download_url})`);
+          }
+
+    - name: Display residuals plot
+      uses: actions/github-script@v3
+      with:
+        script: |
+          const artifact = artifacts.artifact_list.artifacts.find(artifact => artifact.name === 'residuals');
+          if (artifact) {
+            core.info(`![residuals](${artifact.archive_download_url})`);
+          }
