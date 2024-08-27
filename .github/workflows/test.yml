@@ -1,4 +1,4 @@
-name: Model Testing
+name: Model Testing Workflow
 
 on:
   pull_request:
