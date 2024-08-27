@@ -1,13 +1,17 @@
-name: Test Flask API
+name: Model Testing
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  test:
+  test_model:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -16,11 +20,25 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
+        python -m pip install --upgrade pip
+        pip install pandas scikit-learn matplotlib seaborn
 
-    - name: Run tests
+    - name: Run model training and testing
       run: |
-        source venv/bin/activate
-        pytest test.py
+        python train.py
+
+    - name: Upload score
+      run: |
+        echo "Model Score: $(cat score.txt)" > $GITHUB_STEP_SUMMARY
+
+    - name: Upload feature importance plot
+      uses: actions/upload-artifact@v2
+      with:
+        name: feature_importance
+        path: feature_importance.png
+
+    - name: Upload residuals plot
+      uses: actions/upload-artifact@v2
+      with:
+        name: residuals
+        path: residuals.png
