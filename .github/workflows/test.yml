@@ -1,9 +1,6 @@
 name: Model Testing Workflow
 
-on:
-  pull_request:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   test_model:
