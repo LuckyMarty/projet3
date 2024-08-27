@@ -45,3 +45,17 @@ jobs:
       with:
         name: residuals
         path: residuals.png
+
+    - name: Commit and push residuals.png
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add residuals.png
+        git commit -m "Add residuals.png"
+        git push origin HEAD
+
+    - name: Create pull request
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh pr create --title "Add residuals.png" --body "This PR adds the residuals.png file." --base main
